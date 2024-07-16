@@ -276,7 +276,9 @@ func (g *Generator) resolveRecordSchema(schema *avro.RecordSchema) string {
 
 	typeName := g.resolveTypeName(schema)
 	if !g.hasTypeDef(typeName) {
-		g.typedefs = append(g.typedefs, newType(typeName, schema.Doc(), fields, schema.String()))
+		schemaBytes, _ := schema.MarshalJSON()
+
+		g.typedefs = append(g.typedefs, newType(typeName, schema.Doc(), fields, string(schemaBytes)))
 	}
 	return typeName
 }
